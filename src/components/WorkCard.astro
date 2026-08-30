@@ -1,0 +1,48 @@
+---
+import { AiFillTool } from "react-icons/ai"
+import CustomLink from "./CustomLink.astro"
+
+interface Props {
+  containerClass: string
+  title: string
+  dateString: string
+  company?: { name: string; link: string }
+  description: string
+  list: { title: string; items: string[] }
+}
+
+const { containerClass, title, dateString, company, description, list } =
+  Astro.props
+---
+
+<div class={`${containerClass} cards__card`}>
+  <div class="card__info">
+    <h3>{title}</h3>
+    <p class="info__date">{dateString}</p>
+    <p class="info__link">
+      {
+        company ? (
+          <CustomLink withLinkIcon link={company.link} title={company.name} target="_blank" />
+        ) : (
+          <>
+            In development
+            <span style="margin-left: 5px; vertical-align: middle;">
+              <AiFillTool />
+            </span>
+          </>
+        )
+      }
+    </p>
+    <p class="info__description">{description}</p>
+    <div class="info__list">
+      <p class="list__title">{list.title}:</p>
+      <ul>
+        {list.items.map((item) => (
+          <li class="list__item">
+            {item}.
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>

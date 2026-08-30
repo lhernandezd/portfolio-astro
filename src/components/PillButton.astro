@@ -1,0 +1,19 @@
+---
+import { HiOutlineArrowRight } from "react-icons/hi"
+
+interface Props {
+  href: string
+  label: string
+  variant?: "filled" | "outline"
+  target?: string
+}
+
+const { href, label, variant = "filled", target } = Astro.props
+---
+
+<a href={href} target={target} rel={target === "_blank" ? "noopener noreferrer" : undefined} class={`pill-button pill-button--${variant}`}>
+  <span>{label}</span>
+  <span class="pill-button__arrow">
+    <HiOutlineArrowRight />
+  </span>
+</a>

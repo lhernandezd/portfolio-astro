@@ -1,0 +1,23 @@
+---
+interface Props {
+  containerClass: string
+  title: string
+  year: string
+  description: string
+  techStack: string[]
+  featured?: boolean
+}
+
+const { containerClass, title, year, description, techStack, featured = false } = Astro.props
+---
+
+<div class={`${containerClass} cards__card project-card${featured ? " project-card--featured" : ""}`}>
+  <div class="card__info">
+    <h3>{title}</h3>
+    <p class="info__date">{year}</p>
+    <p class="info__description">{description}</p>
+    <div class="project-card__tags">
+      {techStack.map((tech) => <span class="project-card__tag">{tech}</span>)}
+    </div>
+  </div>
+</div>

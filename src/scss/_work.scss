@@ -1,62 +1,56 @@
 .work__container {
   @extend %section-container;
   header {
+    @extend %section-header;
+  }
+
+  .work__info {
     margin-bottom: 1.8em;
-    h2 {
-      margin: 0;
-      font-weight: 400;
-      font-size: 2.2rem;
+    .work__info-link {
+      font-weight: 500;
+      text-decoration: underline;
+    }
+  }
+
+  .work-timeline {
+    border-top: 1px solid;
+    .work-timeline__row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.2em;
+      padding: 0.9em 0.5em;
+      border-bottom: 1px solid;
+      transition: opacity 0.3s;
+      font-size: 14px;
+      &:hover {
+        opacity: 0.6;
+      }
+      @include sm {
+        grid-template-columns: 1fr 1fr 2fr;
+        align-items: center;
+        gap: 1em;
+      }
+    }
+    .work-timeline__date {
+      font-family: $font-mono;
+      opacity: 0.7;
+    }
+    .work-timeline__company {
+      font-weight: 600;
+    }
+    .work-timeline__role {
+      opacity: 0.8;
+    }
+    .work-timeline__tech {
+      opacity: 0.6;
+      font-size: 12px;
+      font-family: $font-mono;
     }
   }
 
   .work__cards {
     grid-gap: 1em 1em;
-    grid-auto-rows: 1fr;
-    .cards__card {
-      border-radius: 4px;
-      height: 100%;
-      position: relative;
-      transition: box-shadow 0.3s;
-      padding: 0;
-      &:hover {
-        box-shadow: unset;
-      }
-      .card__info {
-        h3 {
-          font-size: 1.65rem;
-          margin: 0;
-          &::after {
-            @extend %low-dash;
-            background-color: #eaecef;
-            width: 100%;
-          }
-        }
-        h3, .info__date, .list__title {
-          font-weight: 400;
-        }
-        .info__link {
-          color: $exception-color;
-          a {
-            transition: color 0.3s;
-            color: $exception-color;
-            &:hover {
-              color: $exception-color-2;
-              text-decoration: underline;
-            }
-          }
-        }
-        .info__list {
-          ul {
-            padding: 0 0 0 20px;
-          }
-        }
-      }
-      @include sm {
-        padding: 0.5rem 1.5rem;
-        &:hover {
-          box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
-        }
-      }
-    }
+    grid-auto-rows: min-content;
+    align-items: stretch;
   }
 }

@@ -1,46 +1,44 @@
-$primary-color: #000;
-$secondary-color: #fff;
-$bg-black: #000;
-$bg-black-2: rgba(0, 0, 0, 0.9);
-$bg-white: #fff;
-$bg-white-2: rgba(255, 255, 255, 1);
-$exception-color: #ED8074;
-$exception-color-2: #c96d63;
+$primary-color: #121212;
+$secondary-color: #f5f5f5;
+$bg-black: #121212;
+$bg-black-2: #3d3d3d;
+$bg-white: #f5f5f5;
+$bg-white-2: #a6a6a6;
+$font-mono: "Fira Code", monospace;
+$radius-card: 24px;
+$radius-pill: 999px;
 
-@mixin gradient-text($gradient, $bg: "light") {
-  @supports (mix-blend-mode: lighten) {
-    display: inline-block;
-    position: relative;
+%pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: $radius-pill;
+  font-family: $font-mono;
+}
 
-    &::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+%card {
+  border-radius: $radius-card;
+}
 
-      background: unquote($gradient);
-      pointer-events: none;
-    }
+.custom-link {
+  transition: opacity 0.3s;
+  &:hover {
+    opacity: 0.7;
+  }
+}
 
-    @if ($bg == "light") {
-      color: $primary-color;
-      background: $bg-white;
-      mix-blend-mode: multiply;
-
-      &::before {
-        mix-blend-mode: screen;
-      }
-    } @else {
-      color: $secondary-color;
-      background: $bg-black;
-      mix-blend-mode: lighten;
-
-      &::before {
-        mix-blend-mode: multiply;
-      }
+%contact-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  a {
+    @extend %pill;
+    padding: 8px 18px;
+    font-size: 13px;
+    border: 1px solid currentColor;
+    svg {
+      margin-right: 2px;
     }
   }
 }

@@ -1,0 +1,61 @@
+%section-header {
+  margin-bottom: 1.8em;
+  h2 {
+    margin: 0;
+    font-family: $font-mono;
+    font-weight: 700;
+    font-size: 2.6rem;
+    @include md {
+      font-size: 3.4rem;
+    }
+  }
+}
+
+.cards__card {
+  @extend %card;
+  border: 1px solid;
+  position: relative;
+  padding: 1.2rem 1.5rem;
+  .card__info {
+    h3 {
+      font-family: $font-mono;
+      font-size: 1.5rem;
+      margin: 0 0 0.4em;
+    }
+    h3,
+    .info__date,
+    .list__title {
+      font-weight: 400;
+    }
+    .info__link {
+      opacity: 0.8;
+      a {
+        transition: opacity 0.3s;
+        &:hover {
+          opacity: 0.6;
+          text-decoration: underline;
+        }
+      }
+    }
+    .info__list {
+      ul {
+        padding: 0 0 0 20px;
+      }
+    }
+  }
+}
+
+.project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0.8em;
+}
+
+.project-card__tag {
+  @extend %pill;
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1px solid currentColor;
+  opacity: 0.8;
+}

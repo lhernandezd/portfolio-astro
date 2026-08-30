@@ -1,0 +1,39 @@
+---
+import { HiOutlineExternalLink } from "react-icons/hi"
+import { FaGithub, FaLinkedinIn } from "react-icons/fa"
+import { IoMdMail } from "react-icons/io"
+import { TiDocumentText } from "react-icons/ti"
+
+const icons = {
+  github: FaGithub,
+  linkedin: FaLinkedinIn,
+  mail: IoMdMail,
+  resume: TiDocumentText,
+}
+
+interface Props {
+  link: string
+  title: string
+  iconName?: keyof typeof icons
+  target?: string
+  withLinkIcon?: boolean
+}
+
+const { link, title, iconName, target, withLinkIcon = false } = Astro.props
+
+const Icon = iconName && icons[iconName]
+---
+
+<a href={link} target={target} rel="noopener noreferrer" class="custom-link">
+  {Icon && (
+    <span class="link__leading-icon">
+      <Icon />
+    </span>
+  )}
+  {title}
+  {withLinkIcon && (
+    <span class="link__icon">
+      <HiOutlineExternalLink />
+    </span>
+  )}
+</a>

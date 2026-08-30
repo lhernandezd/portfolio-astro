@@ -1,25 +1,18 @@
-import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React, { useState, useEffect } from "react"
 
-import Drawer from "./drawer"
+import Drawer from "./Drawer"
+import useTheme from "../hooks/useTheme"
 import { useSpring, animated } from "react-spring"
 import { FaRegMoon, FaRegSun } from "react-icons/fa"
 import { IoIosMenu, IoIosClose } from "react-icons/io"
 
-const Header = ({ siteTitle, ...props }) => {
-  let defaultHeight
-  let defaultWidth
-
-  if (typeof window !== `undefined`) {
-    defaultHeight = window.innerHeight
-    defaultWidth = window.innerWidth
-  }
-
+const Header = ({ siteTitle }) => {
+  const { theme, toggleTheme } = useTheme()
   const [open, setOpen] = useState(false)
   const [dimensions, setDimensions] = useState({
-    height: defaultHeight,
-    width: defaultWidth,
+    height: undefined,
+    width: undefined,
   })
   const { o, t } = useSpring({
     config: {
@@ -38,37 +31,59 @@ const Header = ({ siteTitle, ...props }) => {
         width: window?.innerWidth,
       })
     }
+    handleResize()
     window?.addEventListener("resize", handleResize)
     return () => {
       window?.removeEventListener("resize", handleResize)
     }
-  })
+  }, [])
 
-  const pages = ["about", "work", "education", "teaching"]
+  const pages = ["about", "work", "projects", "education", "teaching"]
 
   return (
     <header className="header">
       <nav className="container--extended header__content">
         <div className="content__title">
-          <span className="icon content__icon" onClick={() => setOpen(!open)}>
+          <span
+            className="icon content__icon"
+            role="button"
+            tabIndex={0}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault()
+                setOpen(!open)
+              }
+            }}
+          >
             {!open ? <IoIosMenu /> : <IoIosClose />}
           </span>
           <h1>
-            <Link to="/">{siteTitle}</Link>
+            <a href="/">{siteTitle}</a>
           </h1>
         </div>
         <div className="content__links">
           {pages.map((page, index) => (
-            <Link key={`${page}_${index}`} className="link" to={`/${page}/`}>
+            <a key={`${page}_${index}`} className="link" href={`#${page}`}>
               {`${page[0].toUpperCase()}${page.slice(1)}`}
-            </Link>
+            </a>
           ))}
           <span
             className="link link-last icon"
-            onClick={props.toggle}
-            style={{ display: "none" }}
+            role="button"
+            tabIndex={0}
+            aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"}
+            onClick={toggleTheme}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault()
+                toggleTheme()
+              }
+            }}
           >
-            {props.theme === "light" ? <FaRegMoon /> : <FaRegSun />}
+            {theme === "light" ? <FaRegMoon /> : <FaRegSun />}
           </span>
         </div>
       </nav>
@@ -77,12 +92,19 @@ const Header = ({ siteTitle, ...props }) => {
           <animated.aside
             id="drawer"
             className="header__drawer"
+            aria-hidden={!open}
             style={{
               opacity: o,
               transform: t.to((t) => `translateX(${-t}%)`),
             }}
           >
-            <Drawer toggle={props.toggle} setOpen={setOpen} pages={pages} />
+            <Drawer
+              setOpen={setOpen}
+              pages={pages}
+              open={open}
+              theme={theme}
+              toggleTheme={toggleTheme}
+            />
           </animated.aside>
         </>
       )}

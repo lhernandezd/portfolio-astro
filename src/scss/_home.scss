@@ -12,6 +12,18 @@
   height: 100%;
   overflow: hidden;
   cursor: pointer;
+  &::before {
+    content: "";
+    position: absolute;
+    top: -180px;
+    left: -180px;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.08;
+    pointer-events: none;
+  }
   .home__container {
     height: 350px;
     display: flex;
@@ -19,8 +31,9 @@
     justify-content: center;
     .container__text {
       @extend %text;
+      font-family: $font-mono;
       font-size: 70px;
-      font-weight: 600;
+      font-weight: 700;
       height: 70px;
       line-height: 70px;
       @include sm {
@@ -44,34 +57,12 @@
   }
 }
 
-/* HOME: technologies */
-.home__skills {
-  margin: 0 -20px;
+.home__cta {
   text-align: center;
-  .skills__skill {
-    position: relative;
-    display: inline-block;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 300;
-    margin: 0 8px 15px 8px;
-    padding: 8px 15px;
-    @include sm {
-      font-size: 15px;
-      padding: 8px 20px;
-      margin: 0 10px 15px 10px;
-    }
-  }
-  .size-2 {
-    font-size: 18px;
-    @include sm {
-      font-size: 20px;
-    }
-  }
-  .size-3 {
-    font-size: 23px;
-    @include sm {
-      font-size: 25px;
-    }
-  }
+  margin-bottom: 1.5em;
+}
+
+.home__contacts {
+  @extend %contact-pills;
+  margin-bottom: 2.5em;
 }

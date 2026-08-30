@@ -1,0 +1,25 @@
+---
+import CustomLink from "./CustomLink.astro"
+
+interface Props {
+  containerClass: string
+  title: string
+  dateString: string
+  education: { title: string; link: string }
+  description: string
+}
+
+const { containerClass, title, dateString, education, description } =
+  Astro.props
+---
+
+<div class={`${containerClass} cards__card`}>
+  <div class="card__info">
+    <h3>{title}</h3>
+    <p class="info__date"><b>Graduated:</b> {dateString}</p>
+    <p class="info__link">
+      <CustomLink withLinkIcon link={education.link} title={education.title} target="_blank" />
+    </p>
+    <p class="info__description">{description}</p>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Old multi-page routes now live as anchors on the single-page site.
+# Preserve previously-indexed URLs instead of 404ing.
+[[redirects]]
+  from = "/about/"
+  to = "/#about"
+  status = 301
+
+[[redirects]]
+  from = "/work/"
+  to = "/#work"
+  status = 301
+
+[[redirects]]
+  from = "/education/"
+  to = "/#education"
+  status = 301
+
+[[redirects]]
+  from = "/teaching/"
+  to = "/#teaching"
+  status = 301

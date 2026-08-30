@@ -1,0 +1,100 @@
+---
+import Header from "../components/Header.jsx"
+import CustomLink from "../components/CustomLink.astro"
+import { siteMetadata } from "../consts.js"
+import "../scss/layout.scss"
+
+const { title, description = siteMetadata.description } = Astro.props
+const pageTitle = `${title} | ${siteMetadata.title}`
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content={siteMetadata.author} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Fira+Code:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app dark" id="app-root">
+      <Header client:load siteTitle={siteMetadata.title} />
+      <div id="content" class="container" style="padding: 0px 1.0875rem; padding-top: 0;">
+        <main class="main">
+          <slot />
+        </main>
+      </div>
+      <footer>
+        <div class="footer__info">
+          <div class="container footer__info-container">
+            <p class="footer__name">{siteMetadata.title}</p>
+            <div class="footer__contacts">
+              <CustomLink link="https://github.com/lhernandezd" title="Github" iconName="github" target="_blank" />
+              <CustomLink link="https://www.linkedin.com/in/luis-david-hernandez/" title="Linkedin" iconName="linkedin" target="_blank" />
+              <CustomLink link="mailto:ldhdv95@gmail.com" title="E-mail" iconName="mail" />
+              <CustomLink
+                link="https://drive.google.com/file/d/1cxhPJSJJRl1RR-58q_gL8Ic6XkTBLHEU/view?usp=sharing"
+                title="CV"
+                iconName="resume"
+                withLinkIcon
+                target="_blank"
+              />
+            </div>
+            <p class="footer__credit">
+              Handcrafted by{" "}
+              <a target="_blank" href="https://github.com/lhernandezd" rel="noopener noreferrer">
+                Luis Hernández
+              </a>{" "}
+              · Built with Astro · © {new Date().getFullYear()}
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script is:inline>
+      (function () {
+        var stored = window.localStorage.getItem("theme")
+        var root = document.getElementById("app-root")
+        if (stored === "light") {
+          root.classList.remove("dark")
+          root.classList.add("light")
+          document.documentElement.style.backgroundColor = "#f5f5f5"
+        } else {
+          document.documentElement.style.backgroundColor = "#121212"
+        }
+      })()
+    </script>
+    <script is:inline>
+      ;(function () {
+        var sections = document.querySelectorAll(".main > section")
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-revealed")
+                observer.unobserve(entry.target)
+              }
+            })
+          },
+          { rootMargin: "0px 0px -10% 0px" }
+        )
+        sections.forEach(function (section) {
+          section.classList.add("reveal-on-scroll")
+          observer.observe(section)
+        })
+      })()
+    </script>
+  </body>
+</html>

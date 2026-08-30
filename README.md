@@ -4,7 +4,7 @@ Personal portfolio site for Luis Hernandez, built with [Astro](https://astro.bui
 
 ## Prerequisites
 
-- Node `22.23.2` (see [.nvmrc](.nvmrc); `nvm use` if you use nvm)
+- Node `22.23.2` (see [.nvmrc](.nvmrc);)
 
 ## Getting started
 

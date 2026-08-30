@@ -1,40 +1,29 @@
-/* eslint-disable import/no-anonymous-default-export */
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
-export default () => {
-  if (typeof window !== "undefined") {
-    const data = window.localStorage.getItem("theme") || "light"
-    const [theme, setTheme] = useState(data)
-    const toggleTheme = () => {
-      if (theme !== "dark") {
-        window.localStorage.setItem("theme", "dark")
-        document.documentElement.style.backgroundColor = "#000"
-        setTheme("dark")
-      } else {
-        window.localStorage.setItem("theme", "light")
-        document.documentElement.style.backgroundColor = "#fff"
-        setTheme("light")
-      }
-    }
+export default function useTheme() {
+  const [theme, setTheme] = useState("dark")
+  const isFirstRun = useRef(true)
 
-    useEffect(() => {
-      const localTheme = window.localStorage.getItem("theme")
-      if (localTheme) {
-        localTheme === "light"
-          ? (document.documentElement.style.backgroundColor = "#fff")
-          : (document.documentElement.style.backgroundColor = "#000")
-        setTheme(localTheme)
-      }
-    }, [theme])
+  useEffect(() => {
+    setTheme(window.localStorage.getItem("theme") === "light" ? "light" : "dark")
+  }, [])
 
-    return {
-      theme,
-      toggleTheme,
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false
+      return
     }
-  } else {
-    return {
-      theme: "light",
-      toggleTheme: () => {},
-    }
+    const root = document.getElementById("app-root")
+    if (!root) return
+    root.classList.remove("light", "dark")
+    root.classList.add(theme)
+    document.documentElement.style.backgroundColor = theme === "light" ? "#f5f5f5" : "#121212"
+    window.localStorage.setItem("theme", theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme((current) => (current === "light" ? "dark" : "light"))
   }
+
+  return { theme, toggleTheme }
 }

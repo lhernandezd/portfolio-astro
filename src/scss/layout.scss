@@ -1,8 +1,10 @@
 @import "utils";
 @import "responsive";
+@import "cards";
 @import "home";
 @import "about";
 @import "work";
+@import "projects";
 @import "education";
 
 $font-stack: "Open Sans", sans-serif;
@@ -39,6 +41,21 @@ html {
   @include md {
     min-height: 540px;
   }
+  > section {
+    padding: 3em 0;
+    @include md {
+      padding: 5em 0;
+    }
+  }
+  .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    &.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 .icon {
@@ -46,11 +63,21 @@ html {
   cursor: pointer;
 }
 
-.link__icon {
-  color: #aaa;
-  display: inline-block;
+.link__icon,
+.link__leading-icon {
+  color: currentColor;
+  display: inline-flex;
+  align-items: center;
   vertical-align: middle;
+}
+
+.link__icon {
+  opacity: 0.6;
   margin-left: 5px;
+}
+
+.link__leading-icon {
+  margin-right: 5px;
 }
 
 .grid {
@@ -72,32 +99,80 @@ html {
   }
 }
 
+/* Pill button (CTA + circular arrow icon) */
+.pill-button {
+  @extend %pill;
+  padding: 12px 8px 12px 22px;
+  font-weight: 500;
+  font-size: 14px;
+  border: 1px solid currentColor;
+  transition: opacity 0.3s;
+  &:hover {
+    opacity: 0.75;
+  }
+  .pill-button__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  &--filled {
+    border-color: transparent;
+    .pill-button__arrow {
+      background: var(--pill-bg);
+      color: var(--pill-fg);
+    }
+  }
+  &--outline .pill-button__arrow {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Section label ("... /About ...") */
+.section-label {
+  font-family: $font-mono;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  margin: 0 0 0.6em;
+}
+
 .app.dark {
   background: $bg-black;
   color: $secondary-color;
   transition: 0.3s all;
-  height: 100vh;
+  min-height: 100vh;
+  position: relative;
   a {
     color: $secondary-color;
     text-decoration: none;
   }
   #gradient,
-  #gradient__link {
-    @include gradient-text(
-      "linear-gradient(to right,#23966c, #faaa54, #e23b4a, #db0768, #360670)",
-      "dark"
-    );
+  .footer__name {
+    font-family: $font-mono;
+    font-weight: 700;
+  }
+  --pill-bg: #{$bg-black};
+  --pill-fg: #{$secondary-color};
+  .pill-button--filled {
+    background: $secondary-color;
+    color: $bg-black;
   }
   #drawer {
     background-color: $bg-black-2;
   }
-  .home__skills {
-    .skills__skill {
-      &:hover {
-        background-color: white;
-        color: black;
-      }
-    }
+  .header {
+    border-bottom-color: rgba(245, 245, 245, 0.12);
+  }
+  .cards__card,
+  .skill-groups__group {
+    border-color: rgba(245, 245, 245, 0.14);
+  }
+  .work-timeline,
+  .work-timeline__row {
+    border-color: rgba(245, 245, 245, 0.12);
   }
 }
 
@@ -105,35 +180,43 @@ html {
   background: $bg-white;
   color: $primary-color;
   transition: 0.3s all;
-  height: 100vh;
+  min-height: 100vh;
+  position: relative;
   a {
     color: $primary-color;
     text-decoration: none;
   }
   #gradient,
-  #gradient__link {
-    @include gradient-text(
-      "linear-gradient(to right,#23966c, #faaa54, #e23b4a, #db0768, #360670)",
-      "light"
-    );
+  .footer__name {
+    font-family: $font-mono;
+    font-weight: 700;
+  }
+  --pill-bg: #{$bg-white};
+  --pill-fg: #{$primary-color};
+  .pill-button--filled {
+    background: $primary-color;
+    color: $bg-white;
   }
   #drawer {
     background-color: $bg-white-2;
   }
-  .home__skills {
-    .skills__skill {
-      &:hover {
-        background-color: black;
-        color: white;
-      }
-    }
+  .header {
+    border-bottom-color: rgba(18, 18, 18, 0.12);
+  }
+  .cards__card,
+  .skill-groups__group {
+    border-color: rgba(18, 18, 18, 0.14);
+  }
+  .work-timeline,
+  .work-timeline__row {
+    border-color: rgba(18, 18, 18, 0.12);
   }
 }
 
 /* Header */
 .header {
   margin-bottom: 1.45rem;
-  border-bottom: 1px solid #eaecef;
+  border-bottom: 1px solid;
   .header__content {
     padding: 1rem 1.0875rem;
     display: flex;
@@ -143,6 +226,7 @@ html {
       display: flex;
       align-items: center;
       h1 {
+        font-family: $font-mono;
         font-size: 1.3rem;
         margin: 0;
         margin-left: 10px;
@@ -152,11 +236,12 @@ html {
       }
     }
     .content__links {
-      font-size: 16px;
+      font-family: $font-mono;
+      font-size: 14px;
       display: none;
       .link {
         padding: 0 30px;
-        font-weight: 300;
+        font-weight: 400;
       }
       .link.link-last {
         padding-right: 0;
@@ -175,13 +260,14 @@ html {
   }
   .header__drawer {
     display: block;
-    font-weight: 300;
+    font-family: $font-mono;
+    font-weight: 400;
     height: 92vh;
     position: absolute;
     top: 61px;
     padding: 0.5rem 0;
     z-index: 2;
-    border-right: 1px solid #eaecef;
+    border-right: 1px solid rgba(128, 128, 128, 0.2);
     @include sm {
       display: none;
     }
@@ -197,7 +283,7 @@ html {
         font-size: 1.1em;
         padding: 0.89rem 0 0.5rem 1.5rem;
         &:hover {
-          color: $exception-color;
+          text-decoration: underline;
         }
       }
       .link.link-last {
@@ -218,21 +304,40 @@ html {
   font-weight: 300;
 }
 
-%low-dash {
-  content: "";
-  display: block;
-  height: 1px;
-  bottom: 0.4px;
-  background-color: $exception-color;
-  transition-property: width;
-  transition-duration: 0.4s;
-}
-
 /* Footer */
 .footer__info {
   padding: 1.5em 0;
   width: 100%;
+  position: relative;
+  overflow: hidden;
+  &::before {
+    content: "";
+    position: absolute;
+    top: -220px;
+    right: -220px;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.08;
+    pointer-events: none;
+  }
   .footer__info-container {
     text-align: center;
+  }
+  .footer__name {
+    font-size: 2.6rem;
+    margin: 0 0 0.5em;
+    @include sm {
+      font-size: 3.6rem;
+    }
+  }
+  .footer__contacts {
+    @extend %contact-pills;
+    margin-bottom: 1.2em;
+  }
+  .footer__credit {
+    opacity: 0.6;
+    font-size: 13px;
   }
 }

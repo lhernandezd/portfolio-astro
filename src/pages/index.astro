@@ -1,0 +1,180 @@
+---
+import { Image } from "astro:assets"
+import BaseLayout from "../layouts/BaseLayout.astro"
+import HeroTrail from "../components/HeroTrail.jsx"
+import PillButton from "../components/PillButton.astro"
+import CustomLink from "../components/CustomLink.astro"
+import WorkCard from "../components/WorkCard.astro"
+import EducationCard from "../components/EducationCard.astro"
+import ProjectCard from "../components/ProjectCard.astro"
+import photo from "../assets/photo.jpg"
+import { jobs } from "../data/work.js"
+import { projects } from "../data/projects.js"
+import { educationItems } from "../data/education.js"
+import { teachingItems } from "../data/teaching.js"
+import { skillGroups } from "../data/skills.js"
+---
+
+<BaseLayout title="Home">
+  <section class="home">
+    <HeroTrail client:load />
+    <div class="home__cta">
+      <PillButton href="#projects" label="Projects" />
+    </div>
+    <div class="home__contacts">
+      <CustomLink link="https://github.com/lhernandezd" title="Github" iconName="github" target="_blank" />
+      <CustomLink link="https://www.linkedin.com/in/luis-david-hernandez/" title="Linkedin" iconName="linkedin" target="_blank" />
+      <CustomLink link="mailto:ldhdv95@gmail.com" title="E-mail" iconName="mail" />
+      <CustomLink
+        link="https://drive.google.com/file/d/1cxhPJSJJRl1RR-58q_gL8Ic6XkTBLHEU/view?usp=sharing"
+        title="CV"
+        iconName="resume"
+        withLinkIcon
+        target="_blank"
+      />
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="about__container">
+      <header>
+        <p class="section-label">... /Get to know me ...</p>
+        <h2>About</h2>
+      </header>
+      <div class="container__info">
+        <div class="info__description">
+          <p class="info__location">Bogotá, Colombia (GMT-5)</p>
+          <p>
+            I'm a Senior Software Developer at Wizeline, with 7+ years of
+            experience across the stack — from web applications and APIs to
+            streaming channels for Roku, using Javascript, BrightScript, and
+            REST services. I care about the whole system, not just what
+            ships to the browser: interpreting and adapting requirements
+            into solutions that hold up end to end.
+          </p>
+          <p>
+            My path started in electronics engineering at Universidad del
+            Norte, but a bootcamp with Make It Real showed me software
+            development was where I wanted to be. Since then I've picked up
+            React, Next.js, Node.js, and GraphQL along the way, and I still
+            aim to create and design solutions with a team with clear
+            objectives.
+          </p>
+          <p>
+            Outside of work, I'm an amateur photographer, tennis player, and
+            animal lover.
+          </p>
+        </div>
+        <div class="info__grid grid">
+          <div class="col-6 grid__element">
+            <div class="skill-groups">
+              {
+                skillGroups.map((group) => (
+                  <div class="skill-groups__group">
+                    <h3>{group.title}</h3>
+                    <p>{group.items.join(" / ")}</p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+          <div class="col-6 grid__element about__photo-col">
+            <Image
+              src={photo}
+              alt="Profile picture"
+              class="element__image"
+              width={800}
+              height={1000}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="work">
+    <div class="work__container">
+      <header>
+        <p class="section-label">... /Career path ...</p>
+        <h2>My Work</h2>
+      </header>
+      <div class="work__info">
+        Here's a timeline of where I've worked over the years. To see some
+        of the things I've actually built, check out the{" "}
+        <a class="work__info-link" href="#projects">
+          Projects
+        </a>{" "}
+        section below.
+      </div>
+      <div class="work-timeline">
+        {
+          jobs.map((job) => (
+            <div class="work-timeline__row">
+              <span class="work-timeline__date">{job.dateString}</span>
+              <span class="work-timeline__company">{job.company}</span>
+              <span class="work-timeline__role">
+                {job.role}
+                <span class="work-timeline__tech">
+                  {" "}
+                  — {job.techStack.join(", ")}
+                </span>
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="projects">
+    <div class="projects__container">
+      <header>
+        <p class="section-label">... /Selected work ...</p>
+        <h2>Projects</h2>
+      </header>
+      <div class="grid projects__cards">
+        {
+          projects.map((project, index) => (
+            <ProjectCard
+              containerClass={index === 0 ? "col-6" : "col-3"}
+              featured={index === 0}
+              {...project}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="education" class="education">
+    <div class="education__container">
+      <header>
+        <p class="section-label">... /Background ...</p>
+        <h2>Education</h2>
+      </header>
+      <div class="grid education__cards">
+        {
+          educationItems.map((item) => (
+            <EducationCard containerClass="col-6" {...item} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="teaching" class="work">
+    <div class="work__container">
+      <header>
+        <p class="section-label">... /Mentorship ...</p>
+        <h2>Teaching</h2>
+      </header>
+      <div class="grid work__cards">
+        {
+          teachingItems.map((item) => (
+            <WorkCard containerClass="col-6" {...item} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

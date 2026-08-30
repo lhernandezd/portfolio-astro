@@ -1,54 +1,61 @@
 .about__container {
   @extend %section-container;
   header {
-    margin-bottom: 1.8em;
-    h2 {
-      margin: 0;
-      font-weight: 400;
-      font-size: 2.2rem;
-    }
+    @extend %section-header;
   }
   p {
     font-weight: 300;
     margin: 0 0 1.8em;
   }
 
+  .info__location {
+    font-family: $font-mono;
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 0.8em;
+  }
+
   .element__image {
-    max-width: 400px;
     display: none;
-    border-radius: 2px;
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: $radius-card;
+    filter: grayscale(1);
     @include md {
       display: block;
     }
   }
 
-  .element__list {
-    padding: 0px;
-    list-style: none;
-    .list__item {
-      text-align: center;
-      margin: 10px;
-      a {
-        font-size: 16px;
+  .about__photo-col {
+    max-width: 500px;
+  }
+
+  .skill-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9em;
+    .skill-groups__group {
+      @extend %card;
+      border: 1px solid;
+      padding: 1em 1.4em;
+      h3 {
+        font-family: $font-mono;
+        margin: 0 0 0.4em;
+        font-size: 1rem;
+      }
+      p {
+        margin: 0;
+        font-size: 14px;
         font-weight: 300;
-        transition: color 0.3s;
-        display: flex;
-        align-items: center;
-        color: $exception-color;
-        &:hover {
-          color: $exception-color-2;
-          text-decoration: underline;
-        }
-        svg {
-          display: block;
-          margin-right: 10px;
-        }
-        .link-circular {
-          font-size: 20px;
-        }
-        .link-square {
-          font-size: 17px;
-        }
+        opacity: 0.85;
+      }
+      &:nth-child(1) {
+        background: var(--pill-fg);
+        color: var(--pill-bg);
+        border-color: transparent;
       }
     }
   }

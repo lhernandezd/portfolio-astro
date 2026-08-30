@@ -1,0 +1,31 @@
+.projects__container {
+  @extend %section-container;
+  header {
+    @extend %section-header;
+  }
+
+  .projects__cards {
+    grid-gap: 1em 1em;
+    grid-auto-rows: min-content;
+    align-items: stretch;
+  }
+
+  .project-card {
+    transition: transform 0.3s, opacity 0.3s;
+    &:hover {
+      transform: translateY(-6px);
+    }
+    &--featured {
+      background: var(--pill-fg);
+      color: var(--pill-bg);
+      border-color: transparent;
+      .info__date,
+      .info__description {
+        opacity: 0.85;
+      }
+      .project-card__tag {
+        border-color: currentColor;
+      }
+    }
+  }
+}

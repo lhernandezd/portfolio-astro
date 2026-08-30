@@ -31,7 +31,7 @@
     "portfolio",
     "astro"
   ],
-  "license": "0BSD",
+  "license": "UNLICENSED",
   "scripts": {
     "build": "astro build",
     "dev": "astro dev",
